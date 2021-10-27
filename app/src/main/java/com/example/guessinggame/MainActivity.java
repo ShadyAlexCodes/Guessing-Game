@@ -1,15 +1,16 @@
 package com.example.guessinggame;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
+public class MainActivity extends AppCompatActivity {
+    Guess guess = new Guess();
     int randomNumber;
 
     @Override
@@ -20,34 +21,42 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void btnGuessInteract(View view) {
-        Guess guess = new Guess();
+        EditText getUserGuess = findViewById(R.id.txtUserGuess);
+
+        System.out.println("FIRST GUESSES: " + guess.guesses);
 
         int userGuess;
-        EditText getUserGuess = (EditText) findViewById(R.id.txtUserGuess);
-        // Check if the text box is empty
-        if (TextUtils.isEmpty(getUserGuess.getText().toString())) {
-            // Define the error
-            getUserGuess.setError("Please enter a number");
-            return;
-        } else {
-            // Otherwise grab the number and parse it into a double
-            userGuess = Integer.parseInt(getUserGuess.getText().toString());
+        if(guess.guesses > 0) {
+            // Check if the text box is empty
+            if (TextUtils.isEmpty(getUserGuess.getText().toString())) {
+                // Define the error
+                getUserGuess.setError("Please enter a number");
+                return;
+            } else {
+                // Otherwise grab the number and parse it into a double
+                userGuess = Integer.parseInt(getUserGuess.getText().toString());
 
-            // Remove the error message
-            getUserGuess.setError(null);
+                // Remove the error message
+                getUserGuess.setError(null);
+            }
+
+            TextView guessOutput = findViewById(R.id.txtOutput);
+            guessOutput.setText(guess.checkGuess(userGuess, randomNumber));
         }
+        else {
+            getUserGuess.setEnabled(false);
 
-        TextView guessOutput = (TextView) findViewById(R.id.txtOutput);
-        guessOutput.setText(guess.checkGuess(userGuess, randomNumber));
+            Button getBtn = (Button) findViewById(R.id.btnGuess);
+            getBtn.setEnabled(false);
 
+        }
     }
 
     public void btnRandomNumberInteract(View view) {
-        Guess guess = new Guess();
         int minValue;
         int maxValue;
 
-        EditText getMinValue = (EditText) findViewById(R.id.txtMinimum);
+        EditText getMinValue = findViewById(R.id.txtMinimum);
 
         // Check if the text box is empty
         if (TextUtils.isEmpty(getMinValue.getText().toString())) {
@@ -62,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
             getMinValue.setError(null);
         }
 
-        EditText getMaxValue = (EditText) findViewById(R.id.txtMaximum);
+        EditText getMaxValue = findViewById(R.id.txtMaximum);
         // Check if the text box is empty
         if (TextUtils.isEmpty(getMaxValue.getText().toString())) {
             // Define the error
@@ -76,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             getMaxValue.setError(null);
         }
 
-        TextView randomNumberGenerated = (TextView) findViewById(R.id.txtRandomGenerated);
+        TextView randomNumberGenerated = findViewById(R.id.txtRandomGenerated);
         randomNumber = guess.generateRandomNumber(minValue, maxValue);
-        randomNumberGenerated.setText("A random number was generated: " + randomNumber);
+        randomNumberGenerated.setText("A random number was generated!");
     }
 }

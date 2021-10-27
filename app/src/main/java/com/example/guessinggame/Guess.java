@@ -2,17 +2,25 @@ package com.example.guessinggame;
 
 public class Guess {
 
-    public String checkGuess(int userGuess, int randomNumber) {
+    int guesses = 3;
 
-        if (userGuess < randomNumber) {
-            System.out.println("A");
-            return "Your guess was too low!";
-        } else if (userGuess > randomNumber) {
-            System.out.println("B");
-            return "Your guess was too high!";
+    public String checkGuess(int userGuess, int randomNumber) {
+        System.out.println("NOG: " + guesses);
+        if(guesses >= 0) {
+            if (userGuess < randomNumber) {
+                System.out.println("A");
+                guesses--;
+                return "Your guess was too low!\n You now have " + guesses + " left!";
+            } else if (userGuess > randomNumber) {
+                System.out.println("B");
+                guesses--;
+                return "Your guess was too high!\n You now have " + guesses + " left!";
+            } else {
+                System.out.println("C");
+                return "Your guess was perfect!";
+            }
         } else {
-            System.out.println("C");
-            return "Your guess was perfect!";
+            return "You are out of guesses!";
         }
     }
 
